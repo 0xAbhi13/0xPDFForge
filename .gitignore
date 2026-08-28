@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.env
+.ENV
+pip-log.txt
+*.egg-info/
+dist/
+build/
+
+# Node (if used)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.temp
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Generated
+*.pdf
+!examples/**/*.pdf
+tmp/
+temp/
+*.zip
+!examples/sample-project.zip
+.coverage
+.pytest_cache/
+.mypy_cache/
+.pytest_cache/
+coverage.xml
+htmlcov/
+
+# Uploads & extracted
+uploads/
+extracted/
+pdfs/

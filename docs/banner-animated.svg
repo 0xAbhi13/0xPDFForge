@@ -1,0 +1,96 @@
+<svg width="1200" height="340" viewBox="0 0 1200 340" xmlns="http://www.w3.org/2000/svg" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00ff88"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="340" rx="24" fill="url(#bg)"/>
+  <!-- Grid pattern -->
+  <g opacity="0.07" stroke="#38bdf8" stroke-width="0.6">
+    <line x1="0" y1="60" x2="1200" y2="60"/><line x1="0" y1="120" x2="1200" y2="120"/><line x1="0" y1="180" x2="1200" y2="180"/><line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="200" y1="0" x2="200" y2="340"/><line x1="400" y1="0" x2="400" y2="340"/><line x1="600" y1="0" x2="600" y2="340"/><line x1="800" y1="0" x2="800" y2="340"/><line x1="1000" y1="0" x2="1000" y2="340"/>
+  </g>
+  <!-- Animated top line -->
+  <rect x="48" y="28" width="1104" height="2" rx="1" fill="url(#accent)" opacity="0.9">
+    <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2.5s" repeatCount="indefinite"/>
+  </rect>
+  <!-- Logo -->
+  <g transform="translate(48, 48)">
+    <rect width="56" height="56" rx="14" fill="white" opacity="0.96"/>
+    <text x="28" y="34" text-anchor="middle" font-family="monospace" font-size="18" font-weight="700" fill="#0f172a">0x</text>
+    <rect x="2" y="2" width="52" height="52" rx="12" fill="none" stroke="#00ff88" stroke-width="1.2" opacity="0.7">
+      <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <!-- Title -->
+  <text x="120" y="86" font-family="Space Grotesk, sans-serif" font-size="38" font-weight="700" fill="white" letter-spacing="-1">0xPDFForge</text>
+  <text x="120" y="108" font-family="Inter, sans-serif" font-size="11" font-weight="600" fill="#94a3b8" letter-spacing="3">DOCS PLATFORM • v1.0 • DETERMINISTIC</text>
+  <!-- Main headline with typing cursor -->
+  <text x="48" y="158" font-family="Space Grotesk, sans-serif" font-size="30" font-weight="700" fill="white">Turn any codebase</text>
+  <text x="48" y="192" font-family="Space Grotesk, sans-serif" font-size="30" font-weight="700" fill="white">into beautiful<tspan fill="#00ff88"> documentation</tspan><tspan fill="white" opacity="0.9">.</tspan></text>
+  <!-- Animated underline for "beautiful" -->
+  <rect x="132" y="200" width="158" height="8" rx="4" fill="#ffea00" opacity="0.95">
+    <animate attributeName="width" values="0;158;158;0" dur="4s" repeatCount="indefinite" keyTimes="0;0.3;0.7;1" calcMode="spline" keySplines="0.4 0 0.2 1; 0 0 1 1; 0.4 0 1 1"/>
+  </rect>
+  <!-- Subtitle -->
+  <text x="48" y="232" font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">Upload a ZIP → secure extraction → deterministic analysis → 19 templates → professional PDF</text>
+  <text x="48" y="252" font-family="JetBrains Mono, monospace" font-size="11" fill="#64748b">No API key • No hallucination • Evidence-based • AI_DISABLED=true</text>
+  <!-- Right preview card (mock) -->
+  <g transform="translate(760, 48)">
+    <rect width="392" height="220" rx="18" fill="white" stroke="#e2e8f0" stroke-width="1.2"/>
+    <rect width="392" height="36" rx="18" fill="#f8fafc" stroke="#e2e8f0"/>
+    <circle cx="18" cy="18" r="6" fill="#ef4444" opacity="0.9"/><circle cx="34" cy="18" r="6" fill="#eab308" opacity="0.9"/><circle cx="50" cy="18" r="6" fill="#22c55e" opacity="0.9"/>
+    <text x="196" y="22" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#64748b">preview.pdf — 19 templates</text>
+    <text x="20" y="62" font-family="JetBrains Mono, monospace" font-size="9" fill="#22c55e">● DETERMINISTIC • NO HALLUCINATION</text>
+    <text x="20" y="84" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="700" fill="#0f172a">acme-portfolio — Docs</text>
+    <text x="20" y="100" font-family="Inter, sans-serif" font-size="9" fill="#64748b">React • Tailwind • Vite • 42 files • 3,812 LOC</text>
+    <!-- Mini bars with animation -->
+    <rect x="20" y="118" width="110" height="44" rx="10" fill="#0f172a"/>
+    <text x="28" y="132" font-family="Inter, sans-serif" font-size="7" fill="white" opacity="0.6">FILES</text><text x="28" y="150" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="white">42</text>
+    <rect x="142" y="118" width="110" height="44" rx="10" fill="#f1f5f9" stroke="#e2e8f0"/>
+    <text x="150" y="132" font-family="Inter, sans-serif" font-size="7" fill="#64748b">LANGUAGES</text><text x="150" y="150" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#0f172a">4</text>
+    <rect x="264" y="118" width="108" height="44" rx="10" fill="white" stroke="#e2e8f0"/>
+    <text x="272" y="132" font-family="Inter, sans-serif" font-size="7" fill="#64748b">APIs</text><text x="272" y="150" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#0f172a">5</text>
+    <!-- Animated progress -->
+    <rect x="20" y="176" width="352" height="6" rx="3" fill="#f1f5f9" stroke="#e2e8f0"/>
+    <rect x="20" y="176" width="0" height="6" rx="3" fill="#0f172a">
+      <animate attributeName="width" values="0;352;352;0" dur="3.5s" repeatCount="indefinite" keyTimes="0;0.5;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1; 0 0 1 1; 0.4 0 1 1"/>
+    </rect>
+    <text x="20" y="196" font-family="JetBrains Mono, monospace" font-size="7" fill="#64748b">ZIP → ANALYSIS → TEMPLATE → PDF • 3.2s</text>
+  </g>
+  <!-- Bottom badges with pulse -->
+  <g transform="translate(48, 282)">
+    <rect width="140" height="28" rx="14" fill="white" stroke="#e2e8f0"/>
+    <circle cx="14" cy="14" r="4" fill="#22c55e"><animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/></circle>
+    <text x="24" y="18" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#0f172a">2,400+ docs generated</text>
+  </g>
+  <g transform="translate(200, 282)">
+    <rect width="120" height="28" rx="14" fill="#0f172a"/>
+    <text x="60" y="18" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="white">19 templates</text>
+  </g>
+  <g transform="translate(332, 282)">
+    <rect width="160" height="28" rx="14" fill="white" stroke="#e2e8f0"/>
+    <text x="80" y="18" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#64748b">AI_DISABLED=true ✓</text>
+  </g>
+  <!-- Floating PDF badge -->
+  <g transform="translate(1050, 280)">
+    <rect width="92" height="44" rx="12" fill="white" stroke="#e2e8f0" filter="url(#glow)"/>
+    <rect x="10" y="10" width="28" height="24" rx="6" fill="#22c55e"/><text x="24" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="white">PDF</text>
+    <text x="48" y="18" font-family="Inter, sans-serif" font-size="8" font-weight="700" fill="#0f172a">A4 • Letter</text>
+    <text x="48" y="30" font-family="Inter, sans-serif" font-size="7" fill="#64748b">20 sections</text>
+  </g>
+</svg>

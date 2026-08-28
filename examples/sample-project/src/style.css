@@ -1,0 +1,6 @@
+.hero { background: #000; color: white; }
+@media (max-width: 768px) { .hero { font-size: 14px; } }
+@media (min-width: 1024px) { .hero { padding: 40px; } }
+.card { transition: all 0.3s ease; animation: fade 1s; }
+@keyframes fade { from {opacity:0} to {opacity:1} }
+.footer { display: flex; }

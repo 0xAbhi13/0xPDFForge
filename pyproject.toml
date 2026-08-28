@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "0xpdfforge"
+version = "1.0.0"
+description = "Turn any codebase into beautiful documentation — ZIP to PDF"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "reportlab",
+    "Pillow",
+    "python-dotenv",
+    "pydantic",
+]
+[project.scripts]
+pdfforge = "cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
