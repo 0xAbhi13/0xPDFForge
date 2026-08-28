@@ -93,7 +93,7 @@
       </g>
       <rect x="20" y="172" width="712" height="1" fill="#e2e8f0"/>
       <text x="20" y="188" font-size="8" font-weight="600" fill="#0f172a">Contents</text>
-      <text x="20" y="202" font-size="7" fill="#64748b">01 Cover &nbsp; 02 Executive Summary &nbsp; 03 Tech Stack &nbsp; 04 Architecture &nbsp; 05 Security &nbsp; … 20 Conclusion</text>
+      <text x="20" y="202" font-size="7" fill="#64748b">01 Cover &#160; 02 Executive Summary &#160; 03 Tech Stack &#160; 04 Architecture &#160; 05 Security &#160; … 20 Conclusion</text>
       <rect x="20" y="216" width="712" height="6" rx="3" fill="#f1f5f9" stroke="#e2e8f0"/>
       <rect width="0" height="6" rx="3" fill="#0f172a" x="20" y="216">
         <animate attributeName="width" values="0;712;712;0" dur="4s" repeatCount="indefinite"/>
