@@ -1,34 +1,19 @@
 <svg width="800" height="420" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#0f172a"/><stop offset="100%" stop-color="#1e293b"/>
-    </linearGradient>
-  </defs>
   <rect width="800" height="420" rx="20" fill="#fcfcfc" stroke="#e2e8f0"/>
-  <!-- Steps -->
   <g font-family="Inter, sans-serif">
-    <!-- Step 1 -->
     <g transform="translate(24,24)">
       <rect width="172" height="120" rx="16" fill="white" stroke="#e2e8f0"/>
       <circle cx="24" cy="24" r="14" fill="#0f172a"/><text x="24" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="white">1</text>
       <text x="48" y="20" font-size="11" font-weight="700" fill="#0f172a">Upload ZIP</text>
       <text x="48" y="34" font-size="8" fill="#64748b">drag &amp; drop • 50MB</text>
-      <rect x="16" y="52" width="140" height="44" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-dasharray="4 4">
-        <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
-      </rect>
+      <rect x="16" y="52" width="140" height="44" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-dasharray="4 4"/>
       <text x="86" y="76" text-anchor="middle" font-size="20" fill="#0f172a">⤓</text>
       <text x="86" y="88" text-anchor="middle" font-size="7" fill="#64748b">project.zip</text>
     </g>
-    <!-- Arrow 1 -->
     <g transform="translate(206,84)">
-      <line x1="0" y1="0" x2="36" y2="0" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.6">
-        <animate attributeName="stroke-dashoffset" values="0;8" dur="0.8s" repeatCount="indefinite"/>
-      </line>
-      <polygon points="36,0 28,-5 28,5" fill="#0f172a" opacity="0.9">
-        <animateTransform attributeName="transform" type="translate" values="0 0; 4 0; 0 0" dur="1.2s" repeatCount="indefinite"/>
-      </polygon>
+      <line x1="0" y1="0" x2="36" y2="0" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.6"/>
+      <polygon points="36,0 28,-5 28,5" fill="#0f172a" opacity="0.9"/>
     </g>
-    <!-- Step 2 -->
     <g transform="translate(252,24)">
       <rect width="172" height="120" rx="16" fill="white" stroke="#e2e8f0"/>
       <circle cx="24" cy="24" r="14" fill="#ffea00"/><text x="24" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">2</text>
@@ -36,24 +21,16 @@
       <text x="48" y="34" font-size="8" fill="#64748b">8 stages • 3s</text>
       <g transform="translate(16,52)">
         <rect width="140" height="8" rx="4" fill="#f1f5f9" stroke="#e2e8f0"/>
-        <rect width="0" height="8" rx="4" fill="#0f172a">
-          <animate attributeName="width" values="0;140;140;0" dur="3s" repeatCount="indefinite" keyTimes="0;0.6;0.85;1"/>
-        </rect>
+        <rect width="84" height="8" rx="4" fill="#0f172a"/>
       </g>
       <g font-size="7" fill="#64748b">
         <text x="16" y="78">✓ Languages</text><text x="16" y="90">✓ Frameworks</text><text x="84" y="78">✓ APIs</text><text x="84" y="90">✓ Security</text>
       </g>
     </g>
-    <!-- Arrow 2 -->
     <g transform="translate(434,84)">
-      <line x1="0" y1="0" x2="36" y2="0" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.6">
-        <animate attributeName="stroke-dashoffset" values="0;8" dur="0.8s" repeatCount="indefinite"/>
-      </line>
-      <polygon points="36,0 28,-5 28,5" fill="#0f172a" opacity="0.9">
-        <animateTransform attributeName="transform" type="translate" values="0 0; 4 0; 0 0" dur="1.2s" repeatCount="indefinite"/>
-      </polygon>
+      <line x1="0" y1="0" x2="36" y2="0" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.6"/>
+      <polygon points="36,0 28,-5 28,5" fill="#0f172a" opacity="0.9"/>
     </g>
-    <!-- Step 3 -->
     <g transform="translate(480,24)">
       <rect width="172" height="120" rx="16" fill="white" stroke="#e2e8f0"/>
       <circle cx="24" cy="24" r="14" fill="white" stroke="#e2e8f0"/><text x="24" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">3</text>
@@ -63,20 +40,13 @@
         <rect width="42" height="28" rx="6" fill="#0f172a"/><text x="37" y="19" text-anchor="middle" font-size="6" font-weight="600" fill="white">Corp</text>
         <rect x="48" y="0" width="42" height="28" rx="6" fill="white" stroke="#e2e8f0"/><text x="69" y="18" text-anchor="middle" font-size="6" fill="#0f172a">GitHub</text>
         <rect x="96" y="0" width="42" height="28" rx="6" fill="#0a0a0a"/><text x="117" y="18" text-anchor="middle" font-size="6" fill="#00ff88">Term</text>
-        <animateTransform attributeName="transform" type="translate" values="0 0; -2 0; 0 0" dur="2s" repeatCount="indefinite"/>
       </g>
       <text x="16" y="98" font-size="7" fill="#64748b">Corporate • Terminal • Glass...</text>
     </g>
-    <!-- Arrow 3 -->
     <g transform="translate(662,84)">
-      <line x1="0" y1="0" x2="36" y2="0" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.6">
-        <animate attributeName="stroke-dashoffset" values="0;8" dur="0.8s" repeatCount="indefinite"/>
-      </line>
-      <polygon points="36,0 28,-5 28,5" fill="#22c55e" opacity="0.9">
-        <animateTransform attributeName="transform" type="translate" values="0 0; 4 0; 0 0" dur="1.2s" repeatCount="indefinite"/>
-      </polygon>
+      <line x1="0" y1="0" x2="36" y2="0" stroke="#0f172a" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.6"/>
+      <polygon points="36,0 28,-5 28,5" fill="#22c55e" opacity="0.9"/>
     </g>
-    <!-- Step 4 -->
     <g transform="translate(24,168)">
       <rect width="752" height="228" rx="16" fill="white" stroke="#e2e8f0"/>
       <rect width="752" height="32" rx="16" fill="#f8fafc" stroke="#e2e8f0"/>
@@ -93,11 +63,9 @@
       </g>
       <rect x="20" y="172" width="712" height="1" fill="#e2e8f0"/>
       <text x="20" y="188" font-size="8" font-weight="600" fill="#0f172a">Contents</text>
-      <text x="20" y="202" font-size="7" fill="#64748b">01 Cover &#160; 02 Executive Summary &#160; 03 Tech Stack &#160; 04 Architecture &#160; 05 Security &#160; … 20 Conclusion</text>
+      <text x="20" y="202" font-size="7" fill="#64748b">01 Cover  02 Executive Summary  03 Tech Stack  04 Architecture  05 Security  … 20 Conclusion</text>
       <rect x="20" y="216" width="712" height="6" rx="3" fill="#f1f5f9" stroke="#e2e8f0"/>
-      <rect width="0" height="6" rx="3" fill="#0f172a" x="20" y="216">
-        <animate attributeName="width" values="0;712;712;0" dur="4s" repeatCount="indefinite"/>
-      </rect>
+      <rect width="428" height="6" rx="3" fill="#0f172a" x="20" y="216"/>
     </g>
   </g>
 </svg>

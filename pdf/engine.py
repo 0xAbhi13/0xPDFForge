@@ -923,11 +923,11 @@ def _pie_languages(languages, template):
     pie.x=60; pie.y=10; pie.width=110; pie.height=110
     # sort top 5
     top=languages[:5]
-    others=sum(l["percentage"] for l in languages[5:]) if len(languages)>5 else 0
+    others=sum(l['percentage'] for l in languages[5:]) if len(languages)>5 else 0
     data=[]
     labels=[]
     for l in top:
-        data.append(l["percentage"])
+        data.append(l['percentage'])
         labels.append(l["language"][:10])
     if others>0:
         data.append(others); labels.append("Other")
@@ -1047,8 +1047,8 @@ def generate_pdf(project: dict, template_id: str, sections_config: list, page_si
         # key facts cards
         cards=[]
         cards.append([
-            Paragraph(f'<b><font color="{colors["primary"]}">Stack</font></b><br/>{", ".join([f["name"] for f in fws[:5]]) or "No frameworks confirmed"}', styles["CardBody"]),
-            Paragraph(f'<b><font color="{colors["primary"]}">Languages</font></b><br/>{", ".join([f"{l["language"]} {l["percentage"]}%" for l in langs[:4]]) or "—"}', styles["CardBody"]),
+            Paragraph(f'<b><font color="{colors["primary"]}">Stack</font></b><br/>{esc(", ".join([f["name"] for f in fws[:5]]) or "No frameworks confirmed")}', styles["CardBody"]),
+            Paragraph(f'<b><font color="{colors["primary"]}">Languages</font></b><br/>{esc(", ".join([f"{l['language']} {l['percentage']}%" for l in langs[:4]]) or "—")}', styles["CardBody"]),
         ])
         cards.append([
             Paragraph(f'<b><font color="{colors["primary"]}">Files</font></b><br/>{stats.get("total_files",0)} total • {stats.get("source_files",0)} source • {stats.get("image_count",0)} images', styles["CardBody"]),
@@ -1154,7 +1154,7 @@ def generate_pdf(project: dict, template_id: str, sections_config: list, page_si
             # lang list
             lang_rows=[]
             for l in langs[:6]:
-                lang_rows.append(Paragraph(f'<b>{esc(l["language"])}</b> — {l["percentage"]}% • {l["files"]} files • {l["loc"]} LOC', styles["CardBody"]))
+                lang_rows.append(Paragraph(f'<b>{esc(l["language"])}</b> — {l['percentage']}% • {l["files"]} files • {l["loc"]} LOC', styles["CardBody"]))
             if pie:
                 # Put pie and list side by side
                 # pie is Drawing, need to embed; use Table with Drawing in cell via workaround: we can render Drawing directly, then list after
