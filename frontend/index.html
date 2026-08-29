@@ -273,12 +273,17 @@ tailwind.config={
         <ul class="mt-3 space-y-1.5 text-[12px]"><li>• ZIP → PDF, 18 templates, A4/Letter</li><li>• Local analysis, no cloud</li><li>• All detectors included</li></ul>
         <button onclick="app.openUpload()" class="mt-4 w-full py-2.5 rounded-full bg-white border border-line font-semibold text-[13px]">Start free</button>
       </div>
-      <div class="bg-ink text-white rounded-2xl p-6 relative overflow-hidden border border-ink">
+      <div id="pro-card" class="bg-ink text-white rounded-2xl p-6 relative overflow-hidden border border-ink transition-all">
         <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-white/10"></div>
-        <div class="text-[11px] tracking-[0.1em] font-semibold text-white/70">PRO • MOST POPULAR</div>
+        <div class="flex items-center gap-2">
+          <div class="text-[11px] tracking-[0.1em] font-semibold text-white/70">PRO • MOST POPULAR</div>
+          <span id="pro-unlocked-badge" class="hidden px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold">✓ UNLOCKED</span>
+        </div>
         <div class="mt-1 font-display font-bold text-[22px]">$0 <span class="text-[13px] font-normal text-white/70">open-source</span></div>
-        <ul class="mt-3 space-y-1.5 text-[12px] text-white/85"><li>• Everything in Free</li><li>• CLI & Docker for CI</li><li>• Batch & custom templates</li></ul>
-        <a href="https://github.com" target="_blank" class="mt-4 block text-center w-full py-2.5 rounded-full bg-white text-ink font-semibold text-[13px]">Star on GitHub</a>
+        <ul class="mt-3 space-y-1.5 text-[12px] text-white/85"><li>• Everything in Free</li><li>• CLI & Docker for CI</li><li id="pro-feature-batch">• Batch & custom templates <span id="pro-lock-icon" class="ml-1">🔒</span></li></ul>
+        <button id="pro-btn" onclick="app.handleStarClick()" class="mt-4 block text-center w-full py-2.5 rounded-full bg-white text-ink font-semibold text-[13px] hover:bg-gray-100 transition Stern">★ Star on GitHub</button>
+        <div id="pro-status" class="mt-2 text-[11px] text-center text-white/60 hidden"></div>
+        <div class="mt-2 text-[10px] text-center text-white/40">Stars: <span id="pro-star-count">—</span> • <a href="https://github.com/0xAbhi13/0xPDFForge" target="_blank" class="underline hover:text-white">View repo</a></div>
       </div>
       <div class="bg-white border border-line rounded-2xl p-6">
         <div class="text-[11px] tracking-[0.1em] font-semibold text-muted">TEAM</div>

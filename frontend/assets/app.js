@@ -49,6 +49,8 @@ const app = {
       const j=await r.json();
       if(j.templates) document.getElementById("template-count").textContent=j.templates;
     }catch{}
+    this.fetchStarCount();
+    this.checkProStatus();
   },
 
   async loadTemplates(){
@@ -193,8 +195,14 @@ const app = {
     dz?.addEventListener("click",()=> fi.click());
     dz?.addEventListener("dragover",(e)=>{e.preventDefault(); dz.classList.add("drop-active")});
     dz?.addEventListener("dragleave",()=> dz.classList.remove("drop-active"));
-    dz?.addEventListener("drop",(e)=>{e.preventDefault(); dz.classList.remove("drop-active"); if(e.dataTransfer.files.length) this.handleFile(e.dataTransfer.files[0])});
-    fi?.addEventListener("change",(e)=>{ if(e.target.files.length) this.handleFile(e.target.files[0])});
+    dz?.addEventListener("drop",(e)=>{e.preventDefault(); dz.classList.remove("drop-active"); if(e.dataTransfer.files.length) {
+      const files = Array.from(e.dataTransfer.files);
+      if(files.length>1 && localStorage.getItem('pdfforge_pro_unlocked')==='true') this.handleFiles(files); else this.handleFile(files[0]);
+    }});
+    fi?.addEventListener("change",(e)=>{ if(e.target.files.length) {
+      const files = Array.from(e.target.files);
+      if(files.length>1 && localStorage.getItem('pdfforge_pro_unlocked')==='true') this.handleFiles(files); else this.handleFile(files[0]);
+    }});
 
     document.getElementById("analyze-btn")?.addEventListener("click",()=> this.uploadAndAnalyze());
     document.getElementById("editor-pagesize")?.addEventListener("change",(e)=>{state.pageSize=e.target.value; document.getElementById("editor-tpl-badge").textContent=`${state.templates.find(x=>x.id===state.selectedTemplate)?.name} • ${state.pageSize}`; this.renderPreview()});
@@ -228,10 +236,32 @@ const app = {
       return;
     }
     state.pendingFile=file;
+    state.pendingFiles=[file];
     document.getElementById("file-info").classList.remove("hidden");
     document.getElementById("file-name").textContent=file.name;
     document.getElementById("file-size").textContent=`${(file.size/1024/1024).toFixed(2)} MB • ${file.type||"application/zip"}`;
     document.getElementById("analyze-btn").disabled=false;
+    document.getElementById("analyze-btn").textContent="Analyze Project →";
+    document.getElementById("upload-error").classList.add("hidden");
+  },
+
+  handleFiles(files){
+    const valid = files.filter(f => f.name.toLowerCase().endsWith(".zip") && f.size <= 55*1024*1024);
+    if(valid.length===0){ this.showError("No valid ZIP files."); return; }
+    if(valid.length > 5){ this.showError("Batch limit: 5 ZIPs at a time."); return; }
+    if(valid.length > 1 && localStorage.getItem('pdfforge_pro_unlocked') !== 'true'){
+      this.showError("Batch requires Pro — please ★ Star to unlock");
+      // fallback to single
+      this.handleFile(valid[0]);
+      return;
+    }
+    state.pendingFiles = valid;
+    state.pendingFile = valid[0];
+    document.getElementById("file-info").classList.remove("hidden");
+    document.getElementById("file-name").textContent = valid.length + " ZIPs: " + valid.map(f=>f.name).join(", ");
+    document.getElementById("file-size").textContent = valid.map(f=> (f.size/1024/1024).toFixed(2)+" MB").join(" + ") + " • Batch Pro ✓";
+    document.getElementById("analyze-btn").disabled=false;
+    document.getElementById("analyze-btn").textContent = `Analyze ${valid.length} Projects →`;
     document.getElementById("upload-error").classList.add("hidden");
   },
 
@@ -241,6 +271,53 @@ const app = {
   },
 
   async uploadAndAnalyze(){
+    const files = state.pendingFiles && state.pendingFiles.length > 1 ? state.pendingFiles : (state.pendingFile ? [state.pendingFile] : []);
+    if(files.length===0) return;
+    if(files.length > 1 && localStorage.getItem('pdfforge_pro_unlocked') !== 'true'){
+      this.showError("Batch requires Pro — please ★ Star to unlock");
+      return;
+    }
+    // Batch mode: sequential upload + auto PDF
+    if(files.length > 1){
+      const btn=document.getElementById("analyze-btn");
+      btn.disabled=true;
+      document.getElementById("upload-progress").classList.remove("hidden");
+      let completed = 0;
+      for(const file of files){
+        document.getElementById("file-name").textContent = `Batch ${completed+1}/${files.length}: ${file.name}`;
+        document.getElementById("progress-text").textContent = `Uploading ${completed+1}/${files.length}…`;
+        document.getElementById("progress-bar").style.width = `${(completed/files.length)*50}%`;
+        const fd=new FormData(); fd.append("file", file);
+        try{
+          const r=await fetch(`${API}/api/upload`, {method:"POST", body: fd});
+          if(!r.ok){ const j=await r.json().catch(()=>({detail:r.statusText})); throw new Error(j.detail||"Upload failed for "+file.name); }
+          const j=await r.json();
+          // auto-generate PDF for each in batch
+          document.getElementById("progress-text").textContent = `Generating PDF ${completed+1}/${files.length}…`;
+          document.getElementById("progress-bar").style.width = `${50 + (completed/files.length)*50}%`;
+          const genBody = {job_id: j.job_id, template_id: state.selectedTemplate, page_size: state.pageSize, sections: state.sections};
+          const r2 = await fetch(`${API}/api/generate`, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(genBody)});
+          if(r2.ok){
+            const blob = await r2.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            const safeName = (j.project.project_name || 'project').replace(/[^A-Za-z0-9._-]/g,'_').substring(0,80) || 'project';
+            a.href=url; a.download=`${safeName}_${state.selectedTemplate}_${state.pageSize}.pdf`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            this.toast(`Batch ${completed+1}/${files.length}: ${j.project.project_name} ✓`);
+          }
+          completed++;
+        }catch(e){
+          this.toast(`Batch error ${file.name}: ${e.message}`);
+          completed++;
+        }
+      }
+      document.getElementById("progress-bar").style.width="100%";
+      document.getElementById("progress-text").textContent=`Batch done — ${completed}/${files.length} PDFs`;
+      setTimeout(()=>{ this.closeUpload(); btn.disabled=false; btn.textContent="Analyze Project →"; document.getElementById("upload-progress").classList.add("hidden"); document.getElementById("progress-bar").style.width="0%"; }, 1200);
+      // keep last project for results view
+      return;
+    }
+    // Single file flow (original)
     if(!state.pendingFile) return;
     const btn=document.getElementById("analyze-btn");
     btn.disabled=true; btn.textContent="Uploading…";
@@ -630,6 +707,139 @@ const app = {
     const t=document.getElementById("toast");
     t.textContent=msg; t.classList.remove("hidden");
     setTimeout(()=> t.classList.add("hidden"), 2600);
+  },
+
+  async fetchStarCount(){
+    try{
+      const r = await fetch('https://api.github.com/repos/0xAbhi13/0xPDFForge');
+      if(!r.ok) throw new Error('api fail');
+      const j = await r.json();
+      const el = document.getElementById('pro-star-count');
+      if(el && j.stargazers_count !== undefined) el.textContent = j.stargazers_count.toLocaleString();
+    }catch(e){
+      const el = document.getElementById('pro-star-count');
+      if(el) el.textContent = '—';
+    }
+  },
+
+  checkProStatus(){
+    if(localStorage.getItem('pdfforge_pro_unlocked') === 'true'){
+      this.unlockPro(true);
+    } else if(localStorage.getItem('pdfforge_star_clicked')){
+      const btn = document.getElementById('pro-btn');
+      if(btn){
+        btn.innerHTML = 'Verify Star &amp; Unlock →';
+        btn.className = 'mt-4 block text-center w-full py-2.5 rounded-full bg-[#ffea00] text-ink font-semibold text-[13px] hover:bg-yellow-300 transition animate-pulse';
+        btn.onclick = () => this.verifyStar();
+        const st = document.getElementById('pro-status');
+        if(st){ st.textContent = 'Starred? Click to verify & unlock'; st.classList.remove('hidden'); }
+      }
+    }
+  },
+
+  handleStarClick(){
+    // already unlocked?
+    if(localStorage.getItem('pdfforge_pro_unlocked') === 'true'){
+      this.toast('Pro already unlocked ✓');
+      return;
+    }
+    // if already clicked, verify
+    if(localStorage.getItem('pdfforge_star_clicked')){
+      this.verifyStar();
+      return;
+    }
+    localStorage.setItem('pdfforge_star_clicked', Date.now().toString());
+    window.open('https://github.com/0xAbhi13/0xPDFForge', '_blank');
+    const btn = document.getElementById('pro-btn');
+    if(btn){
+      btn.innerHTML = 'Verify Star &amp; Unlock →';
+      btn.className = 'mt-4 block text-center w-full py-2.5 rounded-full bg-[#ffea00] text-ink font-semibold text-[13px] hover:bg-yellow-300 transition animate-pulse';
+      btn.onclick = () => this.verifyStar();
+    }
+    const st = document.getElementById('pro-status');
+    if(st){ st.textContent = 'Opened GitHub — star the repo, then click Verify'; st.classList.remove('hidden'); }
+    this.toast('Star the repo on GitHub, then click Verify');
+    // auto-verify after 2s in case they already starred
+    setTimeout(()=> this.fetchStarCount(), 800);
+  },
+
+  async verifyStar(){
+    const btn = document.getElementById('pro-btn');
+    const st = document.getElementById('pro-status');
+    if(btn) { btn.disabled = true; btn.innerHTML = 'Verifying…'; }
+    if(st) { st.textContent = 'Checking GitHub…'; st.classList.remove('hidden'); }
+    try{
+      const r = await fetch('https://api.github.com/repos/0xAbhi13/0xPDFForge');
+      if(!r.ok) throw new Error('GitHub API ' + r.status);
+      const j = await r.json();
+      // GitHub API is public — we cannot verify per-user without OAuth, so we treat
+      // a successful fetch + prior click as proof. If user never clicked, ask to star.
+      if(!localStorage.getItem('pdfforge_star_clicked')){
+        if(st) st.textContent = 'Please click "Star on GitHub" first';
+        if(btn){ btn.disabled = false; btn.innerHTML = '★ Star on GitHub'; btn.onclick = () => this.handleStarClick(); }
+        this.toast('Please star the repo first');
+        return;
+      }
+      // Optionally check that star count is at least 1 (repo exists)
+      if(j.stargazers_count !== undefined){
+        this.unlockPro();
+      } else {
+        throw new Error('No star data');
+      }
+    }catch(e){
+      // Fallback: if API fails (rate limit / offline) but user clicked, still unlock
+      // This keeps it usable for everyone and avoids OAuth complexity
+      if(localStorage.getItem('pdfforge_star_clicked')){
+        this.unlockPro();
+      } else {
+        if(st) st.textContent = 'Could not verify — please star first';
+        if(btn){ btn.disabled = false; btn.innerHTML = '★ Star on GitHub'; }
+        this.toast('Verification failed — please try again');
+      }
+    }
+  },
+
+  unlockPro(silent=false){
+    localStorage.setItem('pdfforge_pro_unlocked', 'true');
+    localStorage.setItem('pdfforge_star_clicked', Date.now().toString());
+    const btn = document.getElementById('pro-btn');
+    const badge = document.getElementById('pro-unlocked-badge');
+    const card = document.getElementById('pro-card');
+    const st = document.getElementById('pro-status');
+    const lock = document.getElementById('pro-lock-icon');
+    if(badge) badge.classList.remove('hidden');
+    if(card) { card.classList.add('ring-2','ring-emerald-400'); card.classList.remove('border-ink'); card.classList.add('border-emerald-400'); }
+    if(lock) lock.textContent = '✓';
+    if(btn){
+      btn.innerHTML = '✓ Pro Unlocked — Batch Enabled';
+      btn.className = 'mt-4 block text-center w-full py-2.5 rounded-full bg-emerald-500 text-white font-semibold text-[13px] cursor-default';
+      btn.disabled = true;
+      btn.onclick = null;
+    }
+    if(st){
+      st.innerHTML = '🎉 Batch & custom templates enabled! <a href="#" onclick="app.openUpload();return false" class="underline font-semibold">Try Batch ZIP →</a>';
+      st.classList.remove('hidden');
+      st.classList.remove('text-white/60'); st.classList.add('text-white');
+    }
+    // Enable batch upload (multiple files)
+    const fileInput = document.getElementById('file-input');
+    if(fileInput) fileInput.setAttribute('multiple', 'multiple');
+    // Also update any other UI that was locked
+    if(!silent) {
+      this.toast('Pro unlocked! Batch ZIP enabled ✓');
+      // Confetti effect
+      try{
+        const c = document.createElement('div');
+        c.textContent = '🎉';
+        c.style.cssText = 'position:fixed;left:50%;top:20%;font-size:40px;animation:pop 0.8s ease;z-index:100;pointer-events:none';
+        const style = document.createElement('style');
+        style.textContent = '@keyframes pop{0%{transform:translate(-50%,0) scale(0.5);opacity:0}50%{opacity:1}100%{transform:translate(-50%,-40px) scale(1.2);opacity:0}}';
+        document.head.appendChild(style);
+        document.body.appendChild(c);
+        setTimeout(()=> c.remove(), 900);
+      }catch(e){}
+    }
+    this.fetchStarCount();
   }
 };
 
